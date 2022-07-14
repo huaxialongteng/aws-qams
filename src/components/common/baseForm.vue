@@ -22,7 +22,11 @@
 								<a-radio-group
 									v-model.trim="formData[item.formCode]"
 									:disabled="
-										item.bind ? item.bind.disabled : isView ? true : false
+										item.bind && item.bind.disabled
+											? item.bind.disabled
+											: isView
+											? true
+											: false
 									"
 								>
 									<a-radio
@@ -43,7 +47,11 @@
 											: { minRows: 2 }
 									"
 									:disabled="
-										item.bind ? item.bind.disabled : isView ? true : false
+										item.bind && item.bind.disabled
+											? item.bind.disabled
+											: isView
+											? true
+											: false
 									"
 									:placeholder="item.placeholder || `请输入${item.formLabel}`"
 									allowClear
@@ -54,7 +62,11 @@
 									@change="inputChange($event, item)"
 									style="width: 100%"
 									:disabled="
-										item.bind ? item.bind.disabled : isView ? true : false
+										item.bind && item.bind.disabled
+											? item.bind.disabled
+											: isView
+											? true
+											: false
 									"
 									v-model.trim="formData[item.formCode]"
 									:placeholder="item.placeholder || `请输入${item.formLabel}`"
