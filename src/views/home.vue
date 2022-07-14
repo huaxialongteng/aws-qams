@@ -14,8 +14,8 @@
 						<!-- NOTE iframe嵌套 -->
 						<div class="iframeView">
 							<iframe
-								src="http://192.168.8.78:8088/portal/r/w/"
-								frameborder="0"
+								src="/"
+								frameborder="1"
 								width="100%"
 								height="100%"
 							></iframe>
@@ -34,7 +34,34 @@ export default {
 	name: "Home",
 	data() {
 		return {
-			showDetail: false // 是否展示对应序列号详情
+			showDetail: true, // 是否展示对应序列号详情
+			formData: {},
+			formModel: [
+				[
+					{
+						formCode: "name",
+						formLabel: "名称",
+						formType: "input",
+						rules: [
+							{
+								required: true,
+								message: "请输入名称",
+								trigger: ["blur", "change"]
+							}
+						]
+					},
+					{},
+					{}
+				],
+				[
+					{
+						formCode: "text",
+						formLabel: "描述",
+						formType: "textarea",
+						rules: [{ required: true, message: "请输入描述", trigger: "blur" }]
+					}
+				]
+			]
 		};
 	},
 	components: {
@@ -42,7 +69,14 @@ export default {
 		Message: (resolve) => require(["./message"], resolve),
 		Detail: (resolve) => require(["./detail"], resolve)
 	},
-	methods: {},
+	methods: {
+		submit() {
+			this.$refs.baseForm.submit();
+			if (this.$refs.baseForm.valid) {
+				// console.log(this.formData);
+			}
+		}
+	},
 	created() {}
 };
 </script>

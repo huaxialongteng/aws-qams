@@ -3,10 +3,11 @@
 		<div class="taskForm-view">
 			<h3 style="font-weight: bold; margin: 10px 0">{{ taskData.name }}</h3>
 			<a-form-model
+				v-if="false"
 				ref="ruleForm"
 				:model="formData"
 				:rules="rulesData"
-				layout="inline"
+				layout="vertical"
 			>
 				<a-row :gutter="20">
 					<a-col
@@ -45,6 +46,7 @@
 											: { minRows: 2 }
 									"
 									:disabled="item.bind ? item.bind.disabled : false"
+									allowClear
 								></a-textarea>
 							</template>
 							<template v-else>
@@ -53,12 +55,14 @@
 									:disabled="item.bind ? item.bind.disabled : false"
 									v-model="formData[item.formCode]"
 									:placeholder="item.placeholder || ''"
+									allowClear
 								/>
 							</template>
 						</a-form-model-item>
 					</a-col>
 				</a-row>
 			</a-form-model>
+			<baseForm v-model="baseFormData" :model="baseFormModel" :isView="true" />
 			<template v-if="!problemStatus">
 				<p style="font-weight: bold; margin: 15px 0">所检资料清单</p>
 				<a-table :pagination="false" :columns="columns" :dataSource="tableData">
@@ -100,8 +104,8 @@ export default {
 		return {
 			formTitleName: "军检提交资料",
 			listTitleName: "所检资料清单",
-			formData: { SFJZSY: "1" },
-			formModel: baseFormPlan,
+			baseFormData: { SFJZSY: "1" },
+			baseFormModel: baseFormPlan,
 			columns: columnsOther,
 			tableData: [
 				{
@@ -142,13 +146,13 @@ export default {
 		taskData: {
 			handler(val) {
 				if (val.index === "1") {
-					this.formModel = baseFormUpload;
+					this.baseFormModel = baseFormUpload;
 					this.columns = columnsUpload;
 				} else if (val.index === "3") {
-					this.formModel = baseFormPlan;
+					this.baseFormModel = baseFormPlan;
 					this.columns = columnsPlan;
 				} else {
-					this.formModel = [];
+					this.baseFormModel = [];
 					this.columns = columnsOther;
 				}
 			},
@@ -158,16 +162,16 @@ export default {
 		problemStatus: {
 			handler(val) {
 				if (val === true) {
-					this.formModel = baseFormProblem;
+					this.baseFormModel = baseFormProblem;
 				} else {
 					if (this.taskData.index === "1") {
-						this.formModel = baseFormUpload;
+						this.baseFormModel = baseFormUpload;
 						this.columns = columnsUpload;
 					} else if (this.taskData.index === "3") {
-						this.formModel = baseFormPlan;
+						this.baseFormModel = baseFormPlan;
 						this.columns = columnsPlan;
 					} else {
-						this.formModel = [];
+						this.baseFormModel = [];
 						this.columns = columnsOther;
 					}
 				}

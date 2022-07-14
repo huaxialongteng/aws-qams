@@ -18,8 +18,11 @@ import debounce from "lodash/debounce"; // 创建防抖函数
 import isNil from "lodash/isNil"; // 判断是否为undefined/null ==> 是返回true, 否则返回false
 import isEqual from "lodash/isEqual"; // 执行深比较两者是否相等
 import difference from "lodash/difference"; // 判断一个数组中的值是否在另一个数组中, 排除共有的值, 返回独有的值组成新的数组
+import isEmpty from 'lodash/isEmpty'
 
 import moment from 'moment'
+
+import baseForm from '@components/common/baseForm'
 
 Vue.config.productionTip = false
 Vue.use(Antd)
@@ -33,10 +36,12 @@ Vue.prototype.$lodash = {
   debounce,
   isNil,
   isEqual,
-  difference
+  difference,
+  isEmpty
 }
 
 Vue.prototype.$moment = moment
+Vue.component('baseForm', baseForm)
 
 new Vue({
   router,
