@@ -2,66 +2,6 @@
 	<div class="Task-View">
 		<div class="taskForm-view">
 			<h3 style="font-weight: bold; margin: 10px 0">{{ taskData.name }}</h3>
-			<a-form-model
-				v-if="false"
-				ref="ruleForm"
-				:model="formData"
-				:rules="rulesData"
-				layout="vertical"
-			>
-				<a-row :gutter="20">
-					<a-col
-						:span="item.formType === 'textarea' ? 24 : 8"
-						v-for="(item, index) in formModel"
-						:key="index"
-					>
-						<a-form-model-item
-							:colon="false"
-							:label="item.formLabel"
-							:prop="item.formCode"
-							:wrapperCol="{ span: 24 }"
-						>
-							<template v-if="item.formType && item.formType === 'radio'">
-								<a-radio-group
-									v-model.trim="formData[item.formCode]"
-									:disabled="item.bind ? item.bind.disabled : false"
-								>
-									<a-radio
-										v-for="el in item.searchChild"
-										:key="el.code"
-										:value="el.code"
-										>{{ el.label }}</a-radio
-									>
-								</a-radio-group>
-							</template>
-							<template
-								v-else-if="item.formType && item.formType === 'textarea'"
-							>
-								<a-textarea
-									style="width: 100%"
-									v-model.trim="formData[item.formCode]"
-									:autoSize="
-										item.bind && item.bind.autoSize
-											? item.bind.autoSize
-											: { minRows: 2 }
-									"
-									:disabled="item.bind ? item.bind.disabled : false"
-									allowClear
-								></a-textarea>
-							</template>
-							<template v-else>
-								<a-input
-									style="width: 100%"
-									:disabled="item.bind ? item.bind.disabled : false"
-									v-model="formData[item.formCode]"
-									:placeholder="item.placeholder || ''"
-									allowClear
-								/>
-							</template>
-						</a-form-model-item>
-					</a-col>
-				</a-row>
-			</a-form-model>
 			<baseForm v-model="baseFormData" :model="baseFormModel" :isView="true" />
 			<template v-if="!problemStatus">
 				<p style="font-weight: bold; margin: 15px 0">所检资料清单</p>

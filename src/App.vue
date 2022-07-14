@@ -8,8 +8,10 @@
 
 <style lang="less">
 :root {
-	--primaryColor: #de7960;
-	--primaryHoverColor: rgba(#de7960, 0.1);
+	--primaryColor: #1890ff;
+	--primaryHoverColor: rgba(#1890ff, 0.1);
+	// --primaryColor: #de7960;
+	// --primaryHoverColor: rgba(#de7960, 0.1);
 }
 #app {
 	width: 100%;

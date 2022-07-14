@@ -25,7 +25,8 @@ module.exports = defineConfig({
       less: {
         lessOptions: {
           modifyVars: {
-            'primary-color': '#de7960',
+            // 'primary-color': '#de7960', // 橙色
+            'primary-color': '#1890ff', // 橙色
           },
           javascriptEnabled: true,
         }

@@ -1,5 +1,9 @@
 export const routes = [
   {
+    path: '/',
+    redirect: { name: 'home' }
+  },
+  {
     path: '/home', // 固定区域
     name: 'home',
     component: () => import(/* webpackChunkName: "home" */ '../views/home.vue')

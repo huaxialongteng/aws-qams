@@ -216,6 +216,7 @@ export default {
 		changeTabs(tabsVal) {
 			this.activeTabs = tabsVal;
 			this.treeLoading = true;
+			this.$store.commit("setTaskVal", null);
 			this.initData();
 			setTimeout(() => {
 				this.treeLoading = false;
@@ -232,6 +233,8 @@ export default {
 			// console.log(tabsKeys, statusKeys, activeIndex);
 			this.activeStatus = activeIndex;
 			this.treeLoading = true;
+			this.$store.commit("setTaskVal", null);
+			this.initData();
 			setTimeout(() => {
 				this.treeLoading = false;
 			}, 1000);
@@ -280,6 +283,9 @@ export default {
 			if (!this.expandedKeys.includes(treeNode)) {
 				this.expandedKeys.push(treeNode);
 			}
+			if (num >= 3) {
+				this.$store.commit("setTaskVal", e.node.dataRef);
+			}
 		},
 		onChange(e) {
 			this.handlerSearch(e.target.value);
@@ -319,7 +325,7 @@ export default {
 		}
 	},
 	created() {
-		this.getTreeData();
+		// this.getTreeData();
 		this.generateList(this.treeData);
 	}
 };

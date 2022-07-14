@@ -1,69 +1,79 @@
 <template>
 	<div class="detail">
 		<div class="header-view">
-			<font>{{ codeValue }}</font>
-			<font>( {{ nameValue }} )</font>
+			<font>{{ treeNodeCode }}</font>
+			<font>( {{ treeNodeName }} )</font>
 		</div>
-		<div class="contanier-view">
-			<div class="fixed-view">
-				<div
-					class="task-item-view"
-					:class="{
-						index7: item.index === '7',
-						index8: item.index === '8',
-						activeStatusStyle: false,
-						activeIndexStyle: item.index === activeIndex
-					}"
-					v-for="item in templateData"
-					:key="item.key"
-					@click="handlerDetail(item)"
-				>
-					<font>{{ item.name }}</font>
-					<!-- 问号 -->
-					<div class="question-view" @click.stop="handlerQues(item)">?</div>
-					<!-- 轴线 -->
+		<a-spin :spinning="fixedLoading">
+			<div class="contanier-view">
+				<div class="fixed-view">
 					<div
-						class="line-view"
-						v-if="
-							item.index !== '1' && item.index !== '7' && item.index !== '8'
-						"
-						@click.stop
-					></div>
-					<div v-if="item.index === '6'" class="point6" @click.stop></div>
-					<div
-						v-if="item.index === '7'"
-						class="line-radius line7"
-						:class="{ activeStatusStyle: false }"
-						@click.stop
-					></div>
-					<template v-if="item.index === '8' && type === 'zj'">
+						class="task-item-view"
+						:class="{
+							index7: item.index === '7',
+							index8: item.index === '8',
+							activeStatusStyle: item.nodeState !== 'wait',
+							endNodeStyle: item.nodeState === 'end',
+							waitNodeStyle: item.nodeState === 'wait',
+							activeIndexStyle: item.index === activeIndex
+						}"
+						v-for="item in templateData"
+						:key="item.key"
+						@click="handlerDetail(item)"
+					>
+						<font>{{ item.name }}</font>
+						<!-- 问号 -->
 						<div
-							class="line-radius lineLeftTop8"
+							class="question-view"
+							:class="{ disabledStyle: item.nodeState === 'wait' }"
+							@click.stop="handlerQues(item)"
+						>
+							?
+						</div>
+						<!-- 轴线 -->
+						<div
+							class="line-view"
+							v-if="
+								item.index !== '1' && item.index !== '7' && item.index !== '8'
+							"
+							@click.stop
+						></div>
+						<div v-if="item.index === '6'" class="point6" @click.stop></div>
+						<div
+							v-if="item.index === '7'"
+							class="line-radius line7"
 							:class="{ activeStatusStyle: false }"
 							@click.stop
 						></div>
-						<div
-							class="line-radius lineRightTop8"
-							:class="{ activeStatusStyle: false }"
-							@click.stop
-						></div>
-						<div
-							class="line-radius lineLeftBottom8"
-							:class="{ activeStatusStyle: false }"
-							@click.stop
-						></div>
-						<div
-							class="line-radius lineRightBottom8"
-							:class="{ activeStatusStyle: false }"
-							@click.stop
-						></div>
-					</template>
+						<template v-if="item.index === '8' && type === 'zj'">
+							<div
+								class="line-radius lineLeftTop8"
+								:class="{ activeStatusStyle: false }"
+								@click.stop
+							></div>
+							<div
+								class="line-radius lineRightTop8"
+								:class="{ activeStatusStyle: false }"
+								@click.stop
+							></div>
+							<div
+								class="line-radius lineLeftBottom8"
+								:class="{ activeStatusStyle: false }"
+								@click.stop
+							></div>
+							<div
+								class="line-radius lineRightBottom8"
+								:class="{ activeStatusStyle: false }"
+								@click.stop
+							></div>
+						</template>
+					</div>
+				</div>
+				<div class="content-view">
+					<TaskDetail :taskData="taskData" :problemStatus="problemStatus" />
 				</div>
 			</div>
-			<div class="content-view">
-				<TaskDetail :taskData="taskData" :problemStatus="problemStatus" />
-			</div>
-		</div>
+		</a-spin>
 		<!-- 归档文件预览 -->
 		<FileView v-model="showFileView" />
 	</div>
@@ -80,21 +90,67 @@ export default {
 			nameValue: "C",
 			showFileView: false,
 			problemStatus: false,
+			fixedLoading: false,
 			taskData: {
 				key: this.COM.getUUID(),
 				name: "军检提交资料上传",
 				index: "1"
 			},
 			templateData: [
-				{ key: this.COM.getUUID(), name: "军检提交资料上传", index: "1" },
-				{ key: this.COM.getUUID(), name: "审查提交资料", index: "2" },
-				{ key: this.COM.getUUID(), name: "军检验收计划", index: "3" },
-				{ key: this.COM.getUUID(), name: "质量复合性检查", index: "4" },
-				{ key: this.COM.getUUID(), name: "装箱检查", index: "5" },
-				{ key: this.COM.getUUID(), name: "军检资料审签", index: "6" },
-				{ key: this.COM.getUUID(), name: "质量文件制作", index: "7" },
-				{ key: this.COM.getUUID(), name: "军检活动集中审议", index: "8" },
-				{ key: this.COM.getUUID(), name: "产品交付", index: "9" }
+				{
+					key: this.COM.getUUID(),
+					nodeState: "active",
+					name: "军检提交资料上传",
+					index: "1"
+				},
+				{
+					key: this.COM.getUUID(),
+					nodeState: "active",
+					name: "审查提交资料",
+					index: "2"
+				},
+				{
+					key: this.COM.getUUID(),
+					nodeState: "active",
+					name: "军检验收计划",
+					index: "3"
+				},
+				{
+					key: this.COM.getUUID(),
+					nodeState: "end",
+					name: "质量复合性检查",
+					index: "4"
+				},
+				{
+					key: this.COM.getUUID(),
+					nodeState: "wait",
+					name: "装箱检查",
+					index: "5"
+				},
+				{
+					key: this.COM.getUUID(),
+					nodeState: "wait",
+					name: "军检资料审签",
+					index: "6"
+				},
+				{
+					key: this.COM.getUUID(),
+					nodeState: "wait",
+					name: "质量文件制作",
+					index: "7"
+				},
+				{
+					key: this.COM.getUUID(),
+					nodeState: "wait",
+					name: "军检活动集中审议",
+					index: "8"
+				},
+				{
+					key: this.COM.getUUID(),
+					nodeState: "wait",
+					name: "产品交付",
+					index: "9"
+				}
 			]
 		};
 	},
@@ -103,13 +159,31 @@ export default {
 		FileView: (resolve) => require(["@components/fileView"], resolve),
 		TaskDetail: (resolve) => require(["@components/taskDetail"], resolve)
 	},
+	computed: {
+		treeNodeCode() {
+			this.fixedLoading = true;
+			setTimeout(() => {
+				this.fixedLoading = false;
+			}, 800);
+			return this.$store.getters.getTaskVal.key;
+		},
+		treeNodeName() {
+			this.fixedLoading = true;
+			setTimeout(() => {
+				this.fixedLoading = false;
+			}, 800);
+			return this.$store.getters.getTaskVal.title;
+		}
+	},
 	methods: {
 		handlerDetail(data) {
+			if (data.nodeState === "wait") return;
 			this.problemStatus = false;
 			this.activeIndex = data.index;
 			this.taskData = data;
 		},
 		handlerQues(data) {
+			if (data.nodeState === "wait") return;
 			this.problemStatus = true;
 			this.taskData = data;
 		},
@@ -140,8 +214,16 @@ export default {
 			font-size: 18px;
 		}
 	}
-	.contanier-view {
+	/deep/.ant-spin-nested-loading {
 		height: calc(100% - 65px);
+	}
+	/deep/.ant-spin-container,
+	/deep/.ant-spin-blur {
+		height: 100%;
+	}
+	.contanier-view {
+		// height: calc(100% - 65px);
+		height: 100%;
 		overflow: auto;
 		display: flex;
 		background: #fff;
@@ -215,6 +297,9 @@ export default {
 					color: #fff;
 					font-size: 15px;
 					cursor: pointer;
+				}
+				.disabledStyle {
+					cursor: not-allowed;
 				}
 				.line-view {
 					width: 0px;
@@ -314,9 +399,20 @@ export default {
 			.activeStatusStyle .line-view {
 				border-right: 1px solid var(--primaryColor);
 			}
+			.endNodeStyle {
+				font-weight: bold;
+				color: #222;
+			}
 			.activeIndexStyle {
 				background: var(--primaryColor);
 				color: #fff;
+			}
+			.waitNodeStyle {
+				cursor: not-allowed;
+				&:hover {
+					background: transparent !important;
+					color: #666 !important;
+				}
 			}
 		}
 		.content-view {
