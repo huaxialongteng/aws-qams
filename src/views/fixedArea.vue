@@ -231,10 +231,10 @@ export default {
 		// 切换提交状态
 		changeStatus(tabsKeys, statusKeys, activeIndex) {
 			// console.log(tabsKeys, statusKeys, activeIndex);
-			this.activeStatus = activeIndex;
 			this.treeLoading = true;
 			this.$store.commit("setTaskVal", null);
 			this.initData();
+			this.activeStatus = activeIndex;
 			setTimeout(() => {
 				this.treeLoading = false;
 			}, 1000);
