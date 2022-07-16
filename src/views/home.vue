@@ -14,8 +14,7 @@
 						<!-- NOTE iframe嵌套 -->
 						<div class="iframeView">
 							<iframe
-								v-if="false"
-								:src="`${ipVal}/portal/r/w?sid=${sidVal}&cmd=CLIENT_BPM_WORKLIST_MAIN&processGroupId=obj_f2c2c287432946f7b9454b15bb169892`"
+								:src="`http://localhost:8088/portal/r/w?sid=${sidVal}&cmd=CLIENT_BPM_WORKLIST_MAIN&processGroupId=obj_f2c2c287432946f7b9454b15bb169892`"
 								frameborder="1"
 								width="100%"
 								height="100%"
@@ -36,8 +35,7 @@ export default {
 	data() {
 		return {
 			showDetail: true, // 是否展示对应序列号详情
-			ipVal: window.location.origin || "http://localhost:8088",
-			// sidVal: window.location.href.split("sid=")[1].split("&")[0] || null,
+			sidVal: JSON.parse(localStorage.getItem("sid")),
 			formData: {},
 			formModel: [
 				[

@@ -66,11 +66,11 @@
 									alt=""
 								/>
 								<span v-if="title.indexOf(searchVal) > -1">
-									{{ title.substr(0, title.indexOf(searchVal)) }}
+									<font>{{ title.substr(0, title.indexOf(searchVal)) }}</font>
 									<span style="color: #f50">{{ searchVal }}</span>
-									{{
+									<font>{{
 										title.substr(title.indexOf(searchVal) + searchVal.length)
-									}}
+									}}</font>
 								</span>
 								<span v-else>{{ title }}</span>
 							</template>
